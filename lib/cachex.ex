@@ -74,6 +74,11 @@ defmodule Cachex do
 			def handle_info(:timeout, state = %{}), do: {:noreply, cachex_handle(state), unquote(ttl)}
 			@spec start_link(any) :: {:ok, pid}
 			def start_link(args), do: unquote(start_link_body)
+			@spec start_link :: {:ok, pid}
+			def start_link do
+				args = %{}
+				unquote(start_link_body)
+			end
 
 			@spec cachex_init(%{}) :: {:ok, %{}, 1}
 			defp cachex_init(state = %{}) do
