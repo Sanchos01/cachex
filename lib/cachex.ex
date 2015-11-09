@@ -46,6 +46,16 @@ defmodule Cachex do
 			@spec get_all :: %{}
 			def get_all, do: :ets.foldl(fn({k,v}, acc = %{}) -> Map.put(acc, k, v) end, %{}, __MODULE__)
 
+			@spec get_by_pred(((any) -> boolean)) :: %{}
+			def get_by_pred(pred) do
+				:ets.foldl(fn({k,v}, acc = %{}) ->
+					case pred.(v) do
+						true -> Map.put(acc, k, v)
+						false -> acc
+					end
+				end, %{}, __MODULE__)
+			end
+
 			@spec get_serialized :: String.t
 			def get_serialized do
 				[{__MODULE__, data}] = :ets.lookup(unquote(@serialize_tab), __MODULE__)

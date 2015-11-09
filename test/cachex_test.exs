@@ -19,6 +19,8 @@ defmodule CachexTest do
 			val = TestActor.get_all |> IO.inspect
 			TestActor.get_serialized |> IO.inspect
 			[k] = Map.keys(val)
+			true = (val == TestActor.get_by_pred(&(&1 == k)))
+			true = (%{} == TestActor.get_by_pred(&(&1 == -1)))
 			true = (k == TestActor.get(k) |> IO.inspect)
 		end)
 	end
@@ -30,5 +32,5 @@ defmodule CachexTest do
 		test_func
 		assert 1 + 1 == 2
 	end
-	
+
 end
