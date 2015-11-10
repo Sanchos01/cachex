@@ -56,10 +56,12 @@ defmodule Cachex do
 				end, %{}, __MODULE__)
 			end
 
-			@spec get_serialized :: String.t
+			@spec get_serialized :: String.t | nil
 			def get_serialized do
-				[{__MODULE__, data}] = :ets.lookup(unquote(@serialize_tab), __MODULE__)
-				data
+				case :ets.lookup(unquote(@serialize_tab), __MODULE__) do
+					[{__MODULE__, data}] -> data
+					[] -> nil
+				end
 			end
 
 			#
