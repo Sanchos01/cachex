@@ -4,7 +4,7 @@ This is some great kind of gen server. It reads state from somewhere, stores it 
 
 ```
 defmodule TestActor do
-	use Cachex, [ttl: 700, export: true]
+	use Cachex, [ttl: 700, export: true, serialize_on_init: false]
 	defp read_callback(prev_state) do
 		if (prev_state == %{999 => 999}), do: IO.puts("\nINIT\n")
 		{_,s,_} = :erlang.timestamp

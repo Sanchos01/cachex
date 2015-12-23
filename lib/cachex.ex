@@ -29,6 +29,11 @@ defmodule Cachex do
 							false -> quote location: :keep do GenServer.start_link(__MODULE__, args) end
 							name when is_atom(name) -> quote location: :keep do GenServer.start_link(__MODULE__, args, [name: unquote(name)]) end
 						 end
+		serialize_on_init = case params[:serialize_on_init] do
+								true -> quote location: :keep do true = :ets.insert(unquote(@serialize_tab), {__MODULE__, serialize_callback(state)}) end
+								false -> nil
+								nil -> nil
+							end
 		quote location: :keep do
 
 			#
@@ -85,6 +90,7 @@ defmodule Cachex do
 			@spec cachex_init(%{}) :: {:ok, %{}, 1}
 			defp cachex_init(state = %{}) do
 				if (:ets.info(__MODULE__) == :undefined), do: (__MODULE__ = :ets.new(__MODULE__, unquote(@tab_specs)))
+				unquote(serialize_on_init)
 				{:ok, state, 1}
 			end
 			@spec cachex_handle(%{}) :: %{}
