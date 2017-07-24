@@ -1,6 +1,6 @@
 defmodule Cachex do
 	use Application
-	@tab_specs [:public, :named_table, :ordered_set, {:write_concurrency, true}, {:read_concurrency, true}, :protected]
+	@tab_specs [:public, :named_table, :set]
 	@serialize_tab :cachex_serialized
 
 	# See http://elixir-lang.org/docs/stable/elixir/Application.html
